@@ -1,0 +1,12 @@
+# Copy:
+cls
+ForEach ($mail in $Array_NotFoundMails) {
+    # $Folder_AltesArchiv.Items | Where-Object {$_.ReceivedTime.ToString() -eq $mail.ReceivedTime.ToString()} | ForEach-Object {$_.Copy().Move($Folder_NeuesArchiv)} ## Alte Version
+    try {
+        "Copying object: $($mail.subject), $($mail.ReceivedTime), $($mail.From), $($mail.To), $($mail.EntryID)"
+        ($namespace.GetItemFromID($mail.EntryID)).Copy().Move($Folder_NeuesArchiv)
+    } catch {
+        Write-Host "Error occured:" -ForegroundColor Red
+        $Error[$Error.Count - 1]
+    }
+}
